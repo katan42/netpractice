@@ -1,0 +1,4 @@
+# Ignore the practice directory
+/practice/
+
+.DS_Store
