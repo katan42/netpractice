@@ -31,6 +31,16 @@ python3 -m http.server 49242
 ```
 then navigate to `http://localhost:49242` (or whatever port you chose).
 
+### Exporting a configuration
+
+Once every field on a level is filled in and the interface confirms all hosts can reach each other, use the **Export** button in the training interface to download that level's configuration as a JSON file. Rename it to match the level number (`levelN.json`) and move it to the repository root.
+
+### Submission requirements
+
+- All 10 levels must be solved and exported.
+- The 10 exported configuration files — `level1.json` through `level10.json`, one per level — must be placed at the root of this repository.
+- Each file must reflect a configuration that the training interface has validated as correct (all required hosts able to communicate).
+
 ## 🧠 Concepts I worked through
 
 ### 🔢 What an IP address actually is
@@ -213,6 +223,8 @@ A fixed order of checks, cheapest first:
 ---
 
 ## 📚 Resources
+
+This project is a study of core TCP/IP networking concepts: **TCP/IP addressing**, **subnet masks** and CIDR notation, **default gateways**, **routers and switches**, and the **OSI model layers** (particularly layer 2 data link and layer 3 network) — alongside MAC addresses, ARP, routing tables, and IPv4/IPv6 addressing, all detailed in [🧠 Concepts I worked through](#-concepts-i-worked-through) above.
 
 References used to understand the project topic:
 - From Zero to Network Hero: A Practical Guide to NetPractice 1337_Rabat:
