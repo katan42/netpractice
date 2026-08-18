@@ -31,16 +31,6 @@ python3 -m http.server 49242
 ```
 then navigate to `http://localhost:49242` (or whatever port you chose).
 
-### Exporting configurations
-
-Enter your intranet login on the welcome screen before starting — the exported files are tied to it. Solve a level, then press **Get my config** to download that level's configuration file *before* clicking **Next level**. The logs at the bottom of the page show the hop-by-hop path of each test packet and are the fastest way to find which device is dropping it.
-
-### Submission
-
-All 10 exported configuration files (one per level) go at the root of the repository, alongside this README.
-
----
-
 ## 🧠 Concepts I worked through
 
 ### 🔢 What an IP address actually is
@@ -81,7 +71,7 @@ Three things follow from this that caught me out at least once each:
 
 - **The host bits are discarded, so many addresses collapse to the same network.** `.193`, `.201` and `.206` all AND down to `139.249.183.192` under a `/28`. That is precisely why they're neighbours.
 - **The same address gives a different network under a different mask.** `.201` under `/26` gives `139.249.183.192`; under `/25` it gives `139.249.183.128`. An IP with no mask beside it is meaningless.
-- **Route destinations get ANDed too.** Typing `139.249.183.1/27` into a routing table does not create a route about `.1` — it ANDs to `139.249.183.0/27` and silently becomes a route covering `.0`–`.31`. The interface accepts it without complaint, so a typo here fails quietly rather than being rejected.
+- **Route destinations get ANDed too.** Typing `139.249.183.1/27` into a routing table does not create a route about `.1` — it ANDs to `139.249.183.0/27` and silently becomes a route covering `.0`–`.31`.
 
 ### 🧩 What a subnet is
 
@@ -153,8 +143,6 @@ The two work together like this: **the destination IP is the final target, the d
 
 This is also the real reason a **default gateway must sit inside the sender's own subnet**: the host can only physically hand a frame to something on its own LAN, and it addresses that handoff by MAC. If the gateway IP isn't local, there is nobody to ARP for, no MAC to write into the frame, and nothing to hand the packet to. The arithmetic check (`gateway AND mask == host AND mask`) is the layer-3 shorthand for a layer-2 physical constraint.
 
-NetPractice hides MAC addresses entirely — you never configure one and they never appear in the logs — but the switch behaviour is a simplified stand-in. `pass to all connections` is flooding; `packet not for me` is a device comparing the frame's destination against its own and discarding it. A real switch learns MAC addresses and stops flooding after the first frame, whereas NetPractice floods every time, which is why those two lines are normal noise rather than errors.
-
 ### 🔀 Switches vs. routers, and where "layer 2" comes from
 
 The OSI model splits networking into layers; two of them explain the whole project.
@@ -171,7 +159,7 @@ A **router** operates at layer 3 (network). It reads IP addresses, consults a ro
 | Effect on a LAN | extends it | separates it |
 | Unknown destination | floods every port | consults the routing table |
 
-In the diagrams this shows up plainly: everything hanging off a switch must share one subnet and one mask, while every interface on a router belongs to a *different* subnet.
+Hence, everything hanging off a switch must share one subnet and one mask, while every interface on a router belongs to a *different* subnet.
 
 ### 🔌 What an interface is
 
